@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Include Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #ecf0f1;
+    }
+
+    .container {
+      margin-top: 20px;
+    }
+
+    canvas {
+      border: 1px solid #d1d1d1;
+      margin-top: 20px;
+    }
+
+    .metric-box {
+      background-color: white;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background-color: #00ffd5da; /* Blue color for the line */
+    }
+
+    .revenue-box {
+      background-color: white;
+      color: black; /* Black text for revenue */
+    }
+
+    .revenue-box p {
+      color: #00ffd5da; /* Blue amount for revenue */
+    }
+
+    .outstanding-box {
+      background-color: white;
+      color: black; /* Black text for outstanding amount */
+    }
+
+    .outstanding-box p {
+      color: #ff4d4d; /* Red amount for outstanding amount */
+    }
+    .chart-label {
+      color: black;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1 class="text-left mb-4">Company Metric</h1>
+
+    <!-- Metric Boxes -->
+    <div class="row">
+      <div class="col-md-3">
+        <div class="metric-box revenue-box">
+          <div class="metric-line"></div>
+          <p>$100,000</p>
+          <h5>Revenue</h5>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="metric-box">
+          <div class="metric-line"></div>
+          <p>50</p>
+          <h5>Total Jobs Avg</h5>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="metric-box">
+          <div class="metric-line"></div>
+          <p>200</p>
+          <h5>Tickets Created</h5>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="metric-box">
+          <div class="metric-line"></div>
+          <p>150</p>
+          <h5>Ticket Scheduled</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="metric-box outstanding-box">
+          <div class="metric-line"></div>
+          <p>$20,000</p>
+          <h5>Outstanding Amount</h5>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="metric-box">
+          <div class="metric-line"></div>
+          <p>30</p>
+          <h5>Membership Sold</h5>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="metric-box">
+          <div class="metric-line"></div>
+          <p>120</p>
+          <h5>Jobs Completed</h5>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="metric-box">
+          <div class="metric-line"></div>
+          <p>10</p>
+          <h5>Total Cancels</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="chart-label">Revenue by Job Location</div>
+        <canvas id="revenueByLocation" width="400" height="200"></canvas>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-label">Revenue by Job Type</div>
+        <canvas id="revenueByJobType" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Function to generate random data
+    function generateRandomData(length) {
+      return Array.from({ length }, () => Math.floor(Math.random() * 10000));
+    }
+
+    // Dummy data for the charts
+    var locationData = {
+      labels: ['Location A', 'Location B', 'Location C', 'Location D','Location E', 'Location F', 'Location G', 'Location H'],
+      datasets: [{
+        label: 'Revenue for November 2019',
+        data: generateRandomData(8),
+        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+
+    var jobTypeData = {
+      labels: ['Type 1', 'Type 2', 'Type 3', 'Type 4','Type 5', 'Type 6', 'Type 7', 'Type 8'],
+      datasets: [{
+        label: 'Revenue for November 2019',
+        data: generateRandomData(8),
+        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+
+    // Chart configuration
+    var locationChartConfig = {
+      type: 'bar',
+      data: locationData,
+      options: {
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Job Location'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Revenue for November 2019'
+            }
+          }
+        }
+      }
+    };
+
+    var jobTypeChartConfig = {
+      type: 'bar',
+      data: jobTypeData,
+      options: {
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Job Type'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Revenue for November 2019'
+            }
+          }
+        }
+      }
+    };
+
+    // Render the charts
+    var locationChart = new Chart(document.getElementById('revenueByLocation').getContext('2d'), locationChartConfig);
+    var jobTypeChart = new Chart(document.getElementById('revenueByJobType').getContext('2d'), jobTypeChartConfig);
+  </script>
+
+</body>
+
+</html>
